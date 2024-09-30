@@ -1,9 +1,9 @@
 import React, { useState } from 'react';  
-import { Text, StyleSheet, TextInput, SafeAreaView, TouchableOpacity, View } from 'react-native';  
+import { Text, StyleSheet, TextInput, SafeAreaView, TouchableOpacity, View, Alert } from 'react-native';  
 
 const LoginScreen = () => {  
   const [phoneNumber, setPhoneNumber] = useState('');  
-  const [error, setError] = useState('');  
+  const [error, setError] = useState(''); 
 
   const formatPhoneNumber = (number) => {  
     const cleaned = ('' + number).replace(/\D/g, '');  
@@ -16,11 +16,10 @@ const LoginScreen = () => {
   };  
 
   const handlePhoneChange = (text) => {  
-    setError('');
+    setError(''); 
     const formattedNumber = formatPhoneNumber(text);  
     setPhoneNumber(formattedNumber);  
   };  
-
 
   const validatePhoneNumber = (number) => {  
     const regex = /^(\d{3} )?(\d{3} )?(\d{4})$/;
@@ -31,7 +30,12 @@ const LoginScreen = () => {
     if (validatePhoneNumber(phoneNumber)) {  
       console.log('Số điện thoại hợp lệ:', phoneNumber);  
     } else {  
-      setError('Số điện thoại không hợp lệ. Vui lòng kiểm tra lại.');  
+      setError('Số điện thoại không hợp lệ. Vui lòng kiểm tra lại.');
+      Alert.alert(
+        "Lỗi",
+        "Số điện thoại không hợp lệ. Vui lòng kiểm tra lại.",
+        [{ text: "OK", onPress: () => console.log("Alert closed") }]
+      );
     }  
   };  
 
@@ -47,7 +51,7 @@ const LoginScreen = () => {
       </Text>  
 
       <TextInput  
-        style={styles.input}  
+        style={[styles.input, error ? styles.inputError : null]}  
         onChangeText={handlePhoneChange}  
         value={phoneNumber}  
         placeholder="Nhập số điện thoại của bạn"  
@@ -100,7 +104,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,  
     borderRadius: 5,  
     paddingHorizontal: 10,  
-    marginBottom: 20,  
+    marginBottom: 10,  
+  },  
+  inputError: {  
+    borderColor: 'red',  
   },  
   button: {  
     backgroundColor: 'blue',  
